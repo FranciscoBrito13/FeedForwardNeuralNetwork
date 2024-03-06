@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        int inputDim = 2;
+      /*  int inputDim = 2;
         int hiddenDim = 2;
         int outputDim = 1;
 
@@ -24,7 +24,12 @@ public class Main {
         NeuralNetworkFeedForward neuralNetworkWithValues = new NeuralNetworkFeedForward(inputDim, hiddenDim, outputDim, values);
         System.out.println(System.lineSeparator() + "Neural Network com valores definidos");
         System.out.println(neuralNetworkWithValues);
-        System.out.println(Arrays.toString(neuralNetworkWithValues.getNeuralNetwork()));
+        System.out.println(Arrays.toString(neuralNetworkWithValues.getNeuralNetwork()));*/
+
+        NeuralNetworkFeedForward network = new NeuralNetworkFeedForward(2,2,1);
+        double[] input = {15, 9};
+        System.out.println(Arrays.toString(network.forward(input)));
+        System.out.println(network);
     }
 
 }
