@@ -13,6 +13,14 @@ public class NeuralNetworkFeedForward {
         this.hiddenDim = hiddenDim;
         this.outputDim = outputDim;
 
+        //Creates the bias Array depending on the amount of neurons
+        hiddenBiases = new double[hiddenDim];
+        outputBiases = new double[outputDim];
+
+        //Creates the weights matrix depending on the amount of neurons
+        hiddenWeights = new double[inputDim][hiddenDim];
+        outputWeights = new double[hiddenDim][outputDim];
+
         initializeParameters();
     }
 
@@ -20,6 +28,14 @@ public class NeuralNetworkFeedForward {
         this.inputDim = inputDim;
         this.hiddenDim = hiddenDim;
         this.outputDim = outputDim;
+
+
+        hiddenBiases = new double[hiddenDim];
+        outputBiases = new double[outputDim];
+
+        //Creates the weights matrix depending on the amount of neurons
+        hiddenWeights = new double[inputDim][hiddenDim];
+        outputWeights = new double[hiddenDim][outputDim];
 
         initializeParameters(values);
     }
@@ -86,12 +102,6 @@ public class NeuralNetworkFeedForward {
             throw new IllegalArgumentException("Wrong amount of arguments");
         }
 
-        hiddenBiases = new double[hiddenDim];
-        outputBiases = new double[outputDim];
-
-        //Creates the weights matrix depending on the amount of neurons
-        hiddenWeights = new double[inputDim][hiddenDim];
-        outputWeights = new double[hiddenDim][outputDim];
 
         int index = 0;
 
@@ -123,13 +133,7 @@ public class NeuralNetworkFeedForward {
     }
 
     private void initializeParameters(){
-        //Creates the bias Array depending on the amount of neurons
-        hiddenBiases = new double[hiddenDim];
-        outputBiases = new double[outputDim];
 
-        //Creates the weights matrix depending on the amount of neurons
-        hiddenWeights = new double[inputDim][hiddenDim];
-        outputWeights = new double[hiddenDim][outputDim];
 
         //Sets random values for the bias
         for(int i = 0; i < hiddenDim; i++){
@@ -186,5 +190,33 @@ public class NeuralNetworkFeedForward {
         result += biasOutput;
         return result;
     }
+
+    public double squaredErrorOneOutput(double[] inputValues, double expectedValue){
+        double res = 0;
+        for(int i = 0; i < outputDim; i++){
+            res += Math.pow((expectedValue- forward(inputValues)[i]), 2);
+        }
+        return (double) 1/outputDim * res;
+
+
+    }
+
+    public void bogoImprove(double[] inputValues,  double expectedValue){
+        double[] oldValues = getNeuralNetwork();
+        double oldError = squaredErrorOneOutput(inputValues, expectedValue);
+
+        initializeParameters();
+
+
+        double newError = squaredErrorOneOutput(inputValues, expectedValue);
+        if(newError < oldError){
+            System.out.println("I found better parameters");
+            System.out.println(newError);
+        } else {
+            bogoImprove(inputValues, expectedValue);
+        }
+
+    }
+
 
 }
